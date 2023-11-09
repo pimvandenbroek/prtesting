@@ -26,15 +26,15 @@ jobs:
         git-user-name: myonlinestore-ci-eu
         git-user-email: myonlinestore-ci-eu@myonlinstore.com
         tag-prefix: deployment-
-        output-file: charts/deployment/CHANGELOG.md
+        output-file: CHANGELOG.md
         preset: "conventionalcommits"
         release-count: "0"
         skip-ci: false
-        version-file: './charts/deployment/Chart.yaml'
+        version-file: './version.yaml'
         version-path: 'version'
         skip-version-file: true
         skip-commit: true
-        skip-tag: true
+        skip-tag: false
     - name: Create Pull Request
       id: cpr
       uses: peter-evans/create-pull-request@v5
@@ -52,6 +52,7 @@ jobs:
             Version: ${{ steps.changelog.outputs.version }}
             Tag: ${{ steps.changelog.outputs.tag }}
             Skipped: ${{ steps.changelog.outputs.skipped }}
+            ${{ steps.changelog.outputs }}
             
             [1]: https://github.com/peter-evans/create-pull-request
         labels: |
