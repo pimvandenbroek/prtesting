@@ -32,6 +32,7 @@ jobs:
         skip-ci: false
         version-file: './version.yaml'
         version-path: 'version'
+
     - name: Create Pull Request
       id: cpr
       uses: peter-evans/create-pull-request@v5
@@ -56,11 +57,3 @@ jobs:
             report
             automated pr
             ${{ steps.changelog.outputs.tag }}
-    - name: Create Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      with:
-        tag_name: ${{ steps.changelog.outputs.tag }}
-        release_name: ${{ steps.changelog.outputs.tag }}
-        body: ${{ steps.changelog.outputs.clean_changelog }}
