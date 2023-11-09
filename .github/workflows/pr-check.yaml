@@ -41,8 +41,8 @@ jobs:
       with:
         token: ${{ secrets.GH_TOKEN }}
         title: '[Example] Update report'
-        base: main
-        branch: test01
+        base: test01
+        branch: main
         body: |
             Update report
             - Updated with *today's* date
