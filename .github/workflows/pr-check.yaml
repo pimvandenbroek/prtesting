@@ -34,7 +34,7 @@ jobs:
         version-path: 'version'
         skip-version-file: true
         skip-commit: true
-        skip-tag: false
+        skip-tag: true
     - name: Create Pull Request
       id: cpr
       uses: peter-evans/create-pull-request@v5
