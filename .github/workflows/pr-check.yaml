@@ -32,7 +32,7 @@ jobs:
         skip-ci: false
         version-file: './version.yaml'
         version-path: 'version'
-        skip-version-file: true
+        skip-version-file: false
         skip-commit: true
         skip-tag: true
     - name: Create Pull Request
