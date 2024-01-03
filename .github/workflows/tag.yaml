@@ -4,6 +4,8 @@ run-name: ${{ github.actor }} is testing out Github Checks! Fingers crossed agai
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
 
 jobs:
   tagfix:
