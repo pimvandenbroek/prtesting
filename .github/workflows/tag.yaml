@@ -17,8 +17,6 @@ jobs:
     - id: files
       uses: jitterbit/get-changed-files@v1
     - name: Update Tags
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         for changed_file in ${{ steps.files.outputs.all }}; do
           filename=$changed_file
@@ -37,10 +35,11 @@ jobs:
                 echo "Tags are not equal, updating now"
                 sed -i -e 1d $filename
                 echo -e "# tag: $newtag\n$(cat $filename)" > $filename
-                git add $filename
-                git commit -m "Fixed tag"
-                git push
             fi
             echo "======================="
           fi
         done
+    - name: Commit Tags
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: Updated tags
