@@ -32,8 +32,9 @@ jobs:
               echo "Tags are equal."
           else
               echo "Tags are not equal, updating now"
-              sed -i '' -e 1d $filename
+              sed -i -e 1d $filename
               echo -e "# tag: $newtag\n$(cat $filename)" > $filename
+              cat $filename
           #    git add $filename
           #    git commit -m "Fixed tag"
           fi
