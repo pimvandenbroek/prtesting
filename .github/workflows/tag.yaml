@@ -20,7 +20,7 @@ jobs:
         for changed_file in ${{ steps.files.outputs.all }}; do
           
           filename=$changed_file
-          dockerfile=${filename%/*}
+          dockerfile=${filename%%/*}
           echo $dockerfile
           if [ ! $dockerfile == ".github" ]; then
             line1=$(awk 'NR==1' $filename)
