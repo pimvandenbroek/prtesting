@@ -16,7 +16,6 @@ jobs:
       uses: actions/checkout@master
       with:
         ref: ${{ github.head_ref }}
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
     - id: files
       uses: jitterbit/get-changed-files@v1
     - name: Update Tags
@@ -46,4 +45,5 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: Updated tags
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
