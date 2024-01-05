@@ -18,10 +18,8 @@ jobs:
       uses: jitterbit/get-changed-files@v1
     - run: |
         for changed_file in ${{ steps.files.outputs.all }}; do
-          
           filename=$changed_file
           dockerfile=${filename%%/*}
-          echo $dockerfile
           if [ ! $dockerfile == ".github" ]; then
             line1=$(awk 'NR==1' $filename)
             line2=$(awk 'NR==2' $filename)
@@ -36,8 +34,9 @@ jobs:
                 echo "Tags are not equal, updating now"
                 sed -i -e 1d $filename
                 echo -e "# tag: $newtag\n$(cat $filename)" > $filename
-            #    git add $filename
-            #    git commit -m "Fixed tag"
+                git add $filename
+                git commit -m "Fixed tag"
+                git push
             fi
             echo "======================="
           fi
