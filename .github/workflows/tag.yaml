@@ -16,5 +16,24 @@ jobs:
       uses: jitterbit/get-changed-files@v1
     - run: |
         for changed_file in ${{ steps.files.outputs.all }}; do
-          echo "Do something with this ${changed_file}."
+          filename=$changed_file
+          dockerfile=${filename%/*}
+
+          line1=$(awk 'NR==1' $filename)
+          line2=$(awk 'NR==2' $filename)
+          oldtag=${line1#*:}
+          oldtag=$(echo $oldtag | tr -d ' ')
+          newtag=${line2#*:}
+          echo "$dockerfile: $oldtag -> $newtag"
+
+          if [ "$oldtag" = "$newtag" ]; then
+              echo "Tags are equal."
+          else
+              echo "Tags are not equal, updating now"
+              sed -i '' -e 1d $filename
+              echo -e "# tag: $newtag\n$(cat $filename)" > $filename
+          #    git add $filename
+          #    git commit -m "Fixed tag"
+          fi
+          echo "======================="
         done
