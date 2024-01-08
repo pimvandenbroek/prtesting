@@ -8,6 +8,7 @@ on:
 
 jobs:
   tagfix:
+    if: ${{ github.actor == 'pimvandenbroek' }}
     name: tagfix
     runs-on: ubuntu-latest
     steps:
@@ -19,6 +20,7 @@ jobs:
     - id: files
       uses: jitterbit/get-changed-files@v1
     - name: Update Tags
+      id: updatetags
       run: |
         for changed_file in ${{ steps.files.outputs.all }}; do
           filename=$changed_file
@@ -29,12 +31,12 @@ jobs:
             oldtag=${line1#*:}
             oldtag=$(echo $oldtag | tr -d ' ')
             newtag=${line2#*:}
-            echo "$dockerfile: $oldtag -> $newtag"
+            echo "$dockerfile: $oldtag -> $newtag" >> $GITHUB_OUTPUT
 
             if [ "$oldtag" = "$newtag" ]; then
-                echo "Tags are equal."
+                echo "$dockerfile: Tags are equal." >> $GITHUB_OUTPUT
             else
-                echo "Tags are not equal, updating now"
+                echo "$dockerfile: Tags are not equal, updating now" >> $GITHUB_OUTPUT
                 sed -i -e 1d $filename
                 echo -e "# tag: $newtag\n$(cat $filename)" > $filename
             fi
@@ -47,3 +49,7 @@ jobs:
         commit_message: Updated tags
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+    - uses: mshick/add-pr-comment@v2
+      with:
+        message: |
+          ${{ steps.updatetags.outputs.all }}
