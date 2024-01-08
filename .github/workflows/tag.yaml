@@ -55,4 +55,4 @@ jobs:
     - uses: mshick/add-pr-comment@v2
       with:
         message: |
-          ${{join(steps.update_tags.outputs.*, '\n')}}
+          ${{ steps.update_tags.outputs.all }}
