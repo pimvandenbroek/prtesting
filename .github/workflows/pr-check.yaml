@@ -2,10 +2,7 @@ name: Pre-release deployment
 run-name: ${{ github.actor }} is testing out Github Checks! Fingers crossed again 🚀
 
 on:
-  push:
-    branches-ignore:
-    - master
-    - main
+  workflow_dispatch:
 
 jobs:
   prerelease:
