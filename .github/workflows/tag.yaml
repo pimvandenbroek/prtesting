@@ -1,5 +1,5 @@
 name: TagFixer
-run-name: ${{ github.actor }} is testing out Github Checks! Fingers crossed again 🚀
+run-name: "chore(deps): Bump tags in Dockerfile"
 
 on:
   workflow_dispatch:
