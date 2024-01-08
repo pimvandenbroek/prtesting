@@ -31,10 +31,7 @@ jobs:
             oldtag=${line1#*:}
             oldtag=$(echo $oldtag | tr -d ' ')
             newtag=${line2#*:}
-            echo "$dockerfile: $oldtag -> $newtag"
-            echo "dockerfile=$dockerfile" >> $GITHUB_OUTPUT
-            echo "oldtag=$oldtag" >> $GITHUB_OUTPUT
-            echo "newtag=$newtag" >> $GITHUB_OUTPUT
+            echo "result=$dockerfile: $oldtag -> $newtag" >> $GITHUB_OUTPUT
 
             if [ "$oldtag" = "$newtag" ]; then
                 echo "$dockerfile: Tags are equal."
@@ -55,4 +52,4 @@ jobs:
     - uses: mshick/add-pr-comment@v2
       with:
         message: |
-          ${{ steps.update_tags.outputs.all }}
+          ${{join(steps.update_tags.outputs.*, '\n')}}
