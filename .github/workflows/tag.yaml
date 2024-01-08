@@ -20,7 +20,7 @@ jobs:
     - id: files
       uses: jitterbit/get-changed-files@v1
     - name: Update Tags
-      id: updatetags
+      id: update_tags
       run: |
         for changed_file in ${{ steps.files.outputs.all }}; do
           filename=$changed_file
@@ -31,12 +31,15 @@ jobs:
             oldtag=${line1#*:}
             oldtag=$(echo $oldtag | tr -d ' ')
             newtag=${line2#*:}
-            echo "$dockerfile: $oldtag -> $newtag" >> $GITHUB_OUTPUT
+            echo "$dockerfile: $oldtag -> $newtag"
+            echo "dockerfile=$dockerfile" >> $GITHUB_OUTPUT
+            echo "oldtag=$oldtag" >> $GITHUB_OUTPUT
+            echo "newtag=$newtag" >> $GITHUB_OUTPUT
 
             if [ "$oldtag" = "$newtag" ]; then
-                echo "$dockerfile: Tags are equal." >> $GITHUB_OUTPUT
+                echo "$dockerfile: Tags are equal."
             else
-                echo "$dockerfile: Tags are not equal, updating now" >> $GITHUB_OUTPUT
+                echo "$dockerfile: Tags are not equal, updating now"
                 sed -i -e 1d $filename
                 echo -e "# tag: $newtag\n$(cat $filename)" > $filename
             fi
@@ -52,4 +55,4 @@ jobs:
     - uses: mshick/add-pr-comment@v2
       with:
         message: |
-          ${{ steps.updatetags.outputs.all }}
+          ${{join(steps.update_tags.outputs.*, '\n')}}
