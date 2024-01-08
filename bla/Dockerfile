@@ -1,2 +1,2 @@
-# tag: v0.26.0
+# tag: v0.28.0
 FROM quay.io/prometheus/alertmanager:v0.28.0
